@@ -1,0 +1,63 @@
+* What is ConceptBro?
+
+ConceptBro is a browser for Concept Network. In the theory, the world is consist of concepts and their relations.
+So, Concept Network can be seen as a model of world, and ConceptBro as a tool to navigate in it.
+Go to [[http://wuliang.github.com/assets/projects/ConceptBro : my homepage]] to see some screensnaps.
+
+* Its featues
+ + easy to use GUI based on PyQt4
+ + easy operatation using right clicked popup menu 
+ + selectively expand or un-expand relations
+ + selectively remove nodes, trees
+ + support several kinds of database schema (WordNet, WikiNet, JA-WordNet(coming soon))
+ + mutilple instances 
+
+ 
+* Using ConceptBro
+** run Application
+1. git clone the repository
+2.  modify the setting file (Canvas/orngEnviron.py),configure a list of your databases, like :
+:dbConfig_wn1 = {
+:    'DBNAME' : "WordNet (English)", 
+:    'DBTYPE' : "wordnet" ,      
+:    'DBFILE'  : "/home/wl/tempdown/fat1/AI/database/wordnet30.db", 
+:    'LANG1'  : ['en'], 
+:    'LANG2'  : []
+:}
+LANG1 for primary dictionary. The application will use LANG2 only if LANG1 has no result.
+Current supported languages are: en (English), cn(Chinese, jp (Japanese)
+you can also set no language at all. the application will try all, 
+or you can set any language the database not support, and the application will try and get empty result.
+
+Then set a default database to use, like :
+: defaultdbConfig = dbConfig_wk2
+
+3. run the application: 
+:cd bin
+:./ConceptNet
+
+** get Database
+
+1. wordnet3.0
+[[http://code.google.com/p/synonym/downloads/detail?name=wordnet30.1.tar.gz]]
+
+2. Japanse WordNet
+[[http://nlpwww.nict.go.jp/wn-ja/eng/downloads.html]]
+at part of "Japanese Wordnet and English WordNet in an sqlite3 database"
+
+3. Wikinet
+...there is a tool at here:
+[[http://sourceforge.net/projects/wikinettk/]]
+but can't get any link of wikinet database now.
+ANY ONE has clue? Please inform me if you know where they are.
+
+
+* License
+ConceptBro is free software; you can redistribute it and/or modify i under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or ConceptBro is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+Many works of ConceptBro are based on Orange [[http://orange.biolab.si/license.html:orange]] and Qt[[http://www.qtsoftware.com/products/licensing:Qt]]. Please see their websites for more information.
+ 
+** Release
+- Fri Apr 13 16:34:54 CST 2012
+by wuliang [www dot wuliang dot cn at gmail box]
+

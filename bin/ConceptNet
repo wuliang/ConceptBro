@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+orangeDir = os.path.dirname(os.path.abspath(__file__))  # Orange/bin
+orangeDir = os.path.dirname(orangeDir) # Orange/
+
+canvas_install_dir = os.path.join(orangeDir, "Canvas")
+widget_install_dir = os.path.join(orangeDir, "Widgets")
+
+def samepath(path1, path2):
+    """ Do the paths path1 and path2 point to the same location.
+    """
+    return os.path.normcase(os.path.realpath(os.path.normpath(path1))) == \
+           os.path.normcase(os.path.realpath(os.path.normpath(path2)))
+
+def add_orange_directories_to_path():
+    """Add orange directory paths to sys.path."""
+
+    paths_to_add = [] #[install_dir]
+
+    if canvas_install_dir is not None:
+        paths_to_add.append(canvas_install_dir)
+
+	 
+    # Instead of doing this OrangeWidgets should be a package
+    if widget_install_dir is not None and os.path.isdir(widget_install_dir):
+        paths_to_add.append(widget_install_dir)
+        default_widgets_dirs = [os.path.join(widget_install_dir, x) \
+                                for x in os.listdir(widget_install_dir) \
+                                if os.path.isdir(os.path.join(widget_install_dir, x))]
+        paths_to_add.extend(default_widgets_dirs)
+
+    for path in paths_to_add:
+        if os.path.isdir(path) and not any([samepath(path, x) for x in sys.path]):
+            sys.path.insert(0, path)
+
+
+add_orange_directories_to_path()
+__canvas = os.path.join(canvas_install_dir, "orngCanvas.pyw")
+execfile(__canvas)
+
