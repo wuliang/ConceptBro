@@ -18,7 +18,7 @@ Go to [[http://wuliang.github.com/assets/projects/ConceptBro]]
 * Using ConceptBro
 ** run Application
 1. git clone the repository
-2.  modify the setting file (Canvas/orngEnviron.py),configure a list of your databases, like :
+2.  modify the setting file (:Canvas/orngEnviron.py:),configure a list of your databases, like :
 :dbConfig_wn1 = {
 :    'DBNAME' : "WordNet (English)", 
 :    'DBTYPE' : "wordnet" ,      
@@ -47,10 +47,10 @@ Then set a default database to use, like :
 [[http://nlpwww.nict.go.jp/wn-ja/eng/downloads.html]]
 at part of "Japanese Wordnet and English WordNet in an sqlite3 database"
 
-3. Wikinet
+ + Wikinet
 ...there is a tool at here:
 [[http://sourceforge.net/projects/wikinettk/]]
-but can't get any link of wikinet database now.
+But it seems there is no link of wikinet database now.
 ANY ONE has clue? Please inform me if you know where they are.
 
 
