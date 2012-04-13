@@ -2,7 +2,9 @@
 
 ConceptBro is a browser for Concept Network. In the theory, the world is consist of concepts and their relations.
 So, Concept Network can be seen as a model of world, and ConceptBro as a tool to navigate in it.
-Go to [[http://wuliang.github.com/assets/projects/ConceptBro : my homepage]] to see some screensnaps.
+
+** see some screensnaps
+Go to [[http://wuliang.github.com/assets/projects/ConceptBro]]
 
 * Its featues
  + easy to use GUI based on PyQt4
@@ -38,10 +40,10 @@ Then set a default database to use, like :
 
 ** get Database
 
-1. wordnet3.0
+ + wordnet3.0
 [[http://code.google.com/p/synonym/downloads/detail?name=wordnet30.1.tar.gz]]
 
-2. Japanse WordNet
+ + Japanse WordNet
 [[http://nlpwww.nict.go.jp/wn-ja/eng/downloads.html]]
 at part of "Japanese Wordnet and English WordNet in an sqlite3 database"
 
@@ -55,7 +57,7 @@ ANY ONE has clue? Please inform me if you know where they are.
 * License
 ConceptBro is free software; you can redistribute it and/or modify i under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or ConceptBro is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-Many works of ConceptBro are based on Orange [[http://orange.biolab.si/license.html:orange]] and Qt[[http://www.qtsoftware.com/products/licensing:Qt]]. Please see their websites for more information.
+Many works of ConceptBro are based on Orange [[http://orange.biolab.si/license.html]] and Qt [[http://www.qtsoftware.com/products/licensing]]. Please see their websites for more information.
  
 ** Release
 - Fri Apr 13 16:34:54 CST 2012
