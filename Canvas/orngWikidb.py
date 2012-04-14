@@ -54,7 +54,27 @@ class ConceptSql:
                 self.subary_get_words_of_id.append(self.get_en_words_of_id)
             elif lang == 'jp':
                 self.subary_get_words_of_id.append(self.get_jp_words_of_id)  
+
+        self.primary_get_definition_of_id = []
+        for lang in self.primary:
+            if lang == 'cn':
+                self.primary_get_definition_of_id.append(self.get_cn_definition_of_id)
+            elif lang == 'en':
+                self.primary_get_definition_of_id.append(self.get_en_definition_of_id)
+            elif lang == 'jp':
+                self.primary_get_definition_of_id.append(self.get_jp_definition_of_id)   
+
+        self.subary_get_definition_of_id = []
+        for lang in self.subary:        
+            if lang == 'cn':
+                self.subary_get_definition_of_id.append(self.get_cn_definition_of_id)
+            elif lang == 'en':
+                self.subary_get_definition_of_id.append(self.get_en_definition_of_id)
+            elif lang == 'jp':
+                self.subary_get_definition_of_id.append(self.get_jp_definition_of_id) 
                 
+
+
     def commit(self):
         ret = self.conn.commit()
         return ret
@@ -68,16 +88,35 @@ class ConceptSql:
         NotImplemented
                 
     def get_definition_of_id(self, id):
-        NotImplemented
-                
+        result = []
+        for func in self.primary_get_definition_of_id:
+            txt = func(id)
+            if txt: result.append(txt)
+        if result:
+            return u"\n".join(result)
+            
+        for func in self.subary_get_definition_of_id:
+            txt = func(id)
+            if txt: result.append(txt)
+        return u"\n".join(result)
+
+    def get_cn_definition_of_id(self, id):
+        return ""
+
+    def get_en_definition_of_id(self, id):
+        return ""
+
+    def get_jp_definition_of_id(self, id):
+        return ""
+
     def get_cn_ids_of_word(self, word):
-        NotImplemented
+        return []
 
     def get_en_ids_of_word(self, word):
-        NotImplemented
+        return []
         
     def get_jp_ids_of_word(self, word):
-        NotImplemented
+        return []
 
     def get_all_ids_of_word(self,  word):
         result = []
@@ -91,13 +130,13 @@ class ConceptSql:
         return result
                 
     def get_cn_words_of_id(self,  id):
-        NotImplemented
+        return []
 
     def get_en_words_of_id(self,  id):
-        NotImplemented
+        return []
 
     def get_jp_words_of_id(self,  id):
-        NotImplemented
+        return []
         
     def get_all_words_of_id(self,  id):        
         result = []
@@ -211,7 +250,7 @@ class WordNetSql(ConceptSql):
         relations1 = dict((self.relations[key], value) for (key, value) in relations.items())    
         return relations1
                   
-    def get_definition_of_id(self, id):
+    def get_en_definition_of_id(self, id):
         c = self.conn.cursor()
         q = "SELECT definition FROM synset WHERE synsetid = ? "
         rows = c.execute(q, (id, )).fetchall()
@@ -251,7 +290,162 @@ class WordNetSql(ConceptSql):
         return rows
         
 
+class WikiNetSql(ConceptSql):
+    
+    def __init__(self, *args):
+        ConceptSql.__init__(self, *args)
+                
+    def get_parsed_relations_of_id(self,  id):
+        txts = self.get_raltions_of_id(id)
+        full_txt = u" ".join(txts)
+        relations = self.parse_realtions(full_txt)
+        return relations
+        
+    def parse_realtions(self, txt):
+        items = txt.split(" ")
+        relations = {}
+        rela = None
+        for item in items:
+            if len(item) == 0:
+                continue
+                
+            if item[0] in string.digits:
+                if rela is not None:
+                    rela.append(int(item))
+            else:
+                rela = relations.setdefault(item, [])
+        return relations
+    
+    # all language one definition, so can't separate to Chinese or Japanese or English
+    def get_definition_of_id(self, id):
+        c = self.conn.cursor()
+        q = "SELECT definition FROM defs WHERE id = ? "
+        rows = c.execute(q, (id, )).fetchall()
+        return u" ".join([row[0] for row in rows])
+                
+    def get_cn_ids_of_word(self, word):
+        c = self.conn.cursor()
+        q = "SELECT id FROM words WHERE word = ? "
+        rows = c.execute(q, (word, )).fetchall()
+        return [row[0] for row in rows]
 
+    def get_en_ids_of_word(self, word):
+        c = self.conn.cursor()
+        q = "SELECT id FROM enwords WHERE word = ? "
+        rows = c.execute(q, (word, )).fetchall()
+        return [row[0] for row in rows]
+
+    def get_jp_ids_of_word(self, word):
+        c = self.conn.cursor()
+        q = "SELECT id FROM jpwords WHERE word = ? "
+        rows = c.execute(q, (word, )).fetchall()
+        return [row[0] for row in rows]
+                
+    def get_cn_words_of_id(self,  id):
+        c = self.conn.cursor()
+        q = "SELECT word FROM words WHERE id = ? "
+        rows = c.execute(q, (id, )).fetchall()
+        return [row[0] for row in rows]
+
+    def get_en_words_of_id(self,  id):
+        c = self.conn.cursor()
+        q = "SELECT word FROM enwords WHERE id = ? "
+        rows = c.execute(q, (id, )).fetchall()
+        return [row[0] for row in rows]
+
+    def get_jp_words_of_id(self,  id):
+        c = self.conn.cursor()
+        q = "SELECT word FROM jpwords WHERE id = ? "
+        rows = c.execute(q, (id, )).fetchall()
+        return [row[0] for row in rows]
+                
+    def get_raltions_of_id(self, id):        
+        c = self.conn.cursor()
+        q = "SELECT relation FROM relation WHERE id = ? "
+        rows = c.execute(q, (id, )).fetchall()
+        return [row[0] for row in rows]
+
+class JaWordNetSql(ConceptSql):
+    
+    def __init__(self, *args):
+        ConceptSql.__init__(self, *args)
+        self.relations = {}
+        for id,  name in self.get_definition_of_relation():
+            self.relations[id] = name
+    
+    def get_definition_of_relation(self):
+        c = self.conn.cursor()
+        q = "SELECT link, def FROM link_def"
+        rows = c.execute(q, ()).fetchall()
+        return rows
+
+    def get_parsed_relations_of_id(self,  id):
+        rows = self.get_raltions_of_id(id)
+        relations = self.parse_realtions(rows)
+        return relations
+        
+    def parse_realtions(self,  rows):
+        relations = {}        
+        for item, link in rows:
+            rela = relations.setdefault(link, [])
+            rela.append(item)
+        relations1 = dict((self.relations[key], value) for (key, value) in relations.items())    
+        return relations1
+
+        
+    def get_jp_definition_of_id(self, id):
+        c = self.conn.cursor()
+        q = "SELECT def FROM synset_def WHERE synset = ? and lang ='jpn' "
+        rows = c.execute(q, (id, )).fetchall()
+        return u" ".join([row[0] for row in rows])
+
+    def get_en_definition_of_id(self, id):
+        c = self.conn.cursor()
+        q = "SELECT def FROM synset_def WHERE synset = ? and lang ='eng' "
+        rows = c.execute(q, (id, )).fetchall()
+        return u" ".join([row[0] for row in rows])
+
+    def get_cn_ids_of_word(self, word):
+        # it has no CN word
+        return []
+
+    def get_en_ids_of_word(self, word):
+        c = self.conn.cursor()
+        # sense.lang is same as word.lang, use anyone is ok
+        q = "SELECT sense.synset FROM sense, word WHERE sense.lang = 'eng' and sense.wordid = word.wordid and word.lemma = ?"
+        rows = c.execute(q, (word, )).fetchall()
+        return [row[0] for row in rows]
+
+    def get_jp_ids_of_word(self, word):
+        c = self.conn.cursor()
+        # sense.lang is same as word.lang, use anyone is ok
+        q = "SELECT sense.synset FROM sense, word WHERE sense.lang = 'jpn' and sense.wordid = word.wordid and word.lemma = ?"
+        rows = c.execute(q, (word, )).fetchall()
+        return [row[0] for row in rows]
+                
+    def get_cn_words_of_id(self,  id):
+        return []
+
+    def get_en_words_of_id(self,  id):
+        c = self.conn.cursor()
+        q = "SELECT word.lemma FROM sense, word WHERE sense.lang = 'eng' and sense.wordid = word.wordid and sense.synset = ? "
+        rows = c.execute(q, (id, )).fetchall()
+        return [row[0] for row in rows]
+
+    def get_jp_words_of_id(self,  id):
+        c = self.conn.cursor()
+        q = "SELECT word.lemma FROM sense, word WHERE sense.lang = 'jpn' and sense.wordid = word.wordid and sense.synset = ? "
+        rows = c.execute(q, (id, )).fetchall()
+        return [row[0] for row in rows]
+                
+    def get_raltions_of_id(self, id):        
+        c = self.conn.cursor()
+        # first get synlink
+        q = "SELECT synset2, link FROM synlink WHERE synset1 = ? "
+        rows = c.execute(q, (id, )).fetchall()
+        return rows
+        
+        
 def CreateConceptDB(dbConfig):
     dbtype = dbConfig['DBTYPE']
     filename = dbConfig['DBFILE']
@@ -269,7 +463,7 @@ def CreateConceptDB(dbConfig):
         db = WikiNetSql(filename,  primary,  subary)
         return db
     elif dbtype == 'jawordnet': 
-#        db = WikiNetSql(filename,  primary,  subary)
+        db = JaWordNetSql(filename,  primary,  subary)
         return db
 
 def main():

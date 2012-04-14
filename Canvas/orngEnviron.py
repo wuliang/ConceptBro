@@ -77,6 +77,48 @@ dbConfig_wk4 = {
     'LANG2'  : ['en', 'cn'] 
 }
 
-dbConfigs = [dbConfig_wn1,  dbConfig_wk1,  dbConfig_wk2,  dbConfig_wk3,  dbConfig_wk4]
+dbConfig_jwn1 = {
+    'DBNAME' : "Ja-WordNet (Japanese)", 
+    'DBTYPE' : "jawordnet", 
+    'DBFILE' :  "/home/wl/tempdown/fat1/AI/database/wnjpn.db", 
+    'LANG1'  : ['jp'], 
+    'LANG2'  : [] 
+}
+
+dbConfig_jwn2 = {
+    'DBNAME' : "Ja-WordNet (English)", 
+    'DBTYPE' : "jawordnet", 
+    'DBFILE' :  "/home/wl/tempdown/fat1/AI/database/wnjpn.db", 
+    'LANG1'  : ['en'], 
+    'LANG2'  : [] 
+}
+
+dbConfig_jwn3 = {
+    'DBNAME' : "Ja-WordNet (Japanese Primary)", 
+    'DBTYPE' : "jawordnet", 
+    'DBFILE' :  "/home/wl/tempdown/fat1/AI/database/wnjpn.db", 
+    'LANG1'  : ['jp'], 
+    'LANG2'  : ['en'] 
+}
+
+dbConfig_jwn4 = {
+    'DBNAME' : "Ja-WordNet (English Primary)", 
+    'DBTYPE' : "jawordnet", 
+    'DBFILE' :  "/home/wl/tempdown/fat1/AI/database/wnjpn.db", 
+    'LANG1'  : ['en'], 
+    'LANG2'  : ['jp'] 
+}
+
+dbConfig_jwn5 = {
+    'DBNAME' : "Ja-WordNet (All languages)", 
+    'DBTYPE' : "jawordnet", 
+    'DBFILE' :  "/home/wl/tempdown/fat1/AI/database/wnjpn.db", 
+    'LANG1'  : ['jp', 'en'], 
+    'LANG2'  : [] 
+}
+
+dbConfigs = [dbConfig_wn1,  
+            dbConfig_wk1,  dbConfig_wk2,  dbConfig_wk3,  dbConfig_wk4, 
+            dbConfig_jwn1, dbConfig_jwn2, dbConfig_jwn3, dbConfig_jwn4, dbConfig_jwn5]
 defaultdbConfig = dbConfig_wk2 #dbConfig_wn1
 
