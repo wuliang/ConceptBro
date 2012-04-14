@@ -11,7 +11,7 @@ Go to [[http://wuliang.github.com/assets/projects/ConceptBro]]
  + easy operatation using right clicked popup menu 
  + selectively expand or un-expand relations
  + selectively remove nodes, trees
- + support several kinds of database schema (WordNet, WikiNet, JA-WordNet(coming soon))
+ + support several kinds of database schema (WordNet, WikiNet, JA-WordNet)
  + mutilple instances 
 
  
